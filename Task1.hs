@@ -4,7 +4,10 @@ import Grammar
 import System.IO
 
 main = do
-    print "5"
+    f <- readFile "task1.in"
+    proof <- lines f
+    let a = read (head proof) :: Expr
+    show a
 
 isAxiom :: Expr -> Int
 isAxiom expr = (isAxiom1 expr) + (isAxiom2 expr) + (isAxiom3 expr) + (isAxiom4 expr) + (isAxiom5 expr) + (isAxiom6 expr) + (isAxiom7 expr) + (isAxiom8 expr) + (isAxiom9 expr) + (isAxiom10 expr)
