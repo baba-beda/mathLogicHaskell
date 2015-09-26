@@ -316,13 +316,16 @@ ruleToExpr :: RuleExpr -> Expr
 ruleToExpr (RuleImpl or expr) = Impl (orToExpr or) (ruleToExpr expr)
 ruleToExpr (RuleOr1 or) = orToExpr or
 
+instance Read Expr where
+    readsPrec _ s = [(ruleToExpr $ parse $ lexer $ dropWhile isSpace s, "")]
+
 lexer :: String -> [Token]
 lexer [] = []
 lexer (c:cs) 
     | isSpace c = lexer cs
     | isAlpha c = Token var : lexer rest
-        where var = c : ds
-            (ds, rest) = span isDigit cs
+        where var = c:ds
+              (ds, rest) = span isDigit cs
 lexer ('-':'>':cs) = TokenImpl : lexer cs
 lexer ('&':cs) = TokenAnd : lexer cs
 lexer ('|':cs) = TokenOr : lexer cs
