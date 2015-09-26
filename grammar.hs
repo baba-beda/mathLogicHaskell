@@ -6,7 +6,7 @@ import Control.Monad (ap)
 
 -- parser produced by Happy Version 1.19.5
 
-data HappyAbsSyn t4 t5 t6 t7 t8 t9
+data HappyAbsSyn t4 t5 t6 t7 t8
 	= HappyTerminal (Token)
 	| HappyErrorToken Int
 	| HappyAbsSyn4 t4
@@ -14,108 +14,100 @@ data HappyAbsSyn t4 t5 t6 t7 t8 t9
 	| HappyAbsSyn6 t6
 	| HappyAbsSyn7 t7
 	| HappyAbsSyn8 t8
-	| HappyAbsSyn9 t9
 
-action_0 (10) = happyShift action_7
+action_0 (9) = happyShift action_6
+action_0 (13) = happyShift action_7
 action_0 (14) = happyShift action_8
-action_0 (15) = happyShift action_9
-action_0 (4) = happyGoto action_10
-action_0 (5) = happyGoto action_11
+action_0 (4) = happyGoto action_9
+action_0 (5) = happyGoto action_10
 action_0 (6) = happyGoto action_3
 action_0 (7) = happyGoto action_4
 action_0 (8) = happyGoto action_5
-action_0 (9) = happyGoto action_6
 action_0 _ = happyFail
 
-action_1 (10) = happyShift action_7
+action_1 (9) = happyShift action_6
+action_1 (13) = happyShift action_7
 action_1 (14) = happyShift action_8
-action_1 (15) = happyShift action_9
 action_1 (5) = happyGoto action_2
 action_1 (6) = happyGoto action_3
 action_1 (7) = happyGoto action_4
 action_1 (8) = happyGoto action_5
-action_1 (9) = happyGoto action_6
 action_1 _ = happyFail
 
-action_2 (13) = happyShift action_13
+action_2 (12) = happyShift action_12
 action_2 _ = happyFail
 
-action_3 (12) = happyShift action_16
+action_3 (11) = happyShift action_15
 action_3 _ = happyReduce_3
 
-action_4 _ = happyReduce_10
+action_4 _ = happyReduce_5
 
-action_5 _ = happyReduce_5
+action_5 _ = happyReduce_7
 
-action_6 _ = happyReduce_7
+action_6 _ = happyReduce_10
 
-action_7 _ = happyReduce_11
+action_7 (9) = happyShift action_6
+action_7 (13) = happyShift action_7
+action_7 (14) = happyShift action_8
+action_7 (7) = happyGoto action_14
+action_7 (8) = happyGoto action_5
+action_7 _ = happyFail
 
-action_8 (10) = happyShift action_7
-action_8 (15) = happyShift action_9
-action_8 (7) = happyGoto action_15
-action_8 (9) = happyGoto action_6
+action_8 (9) = happyShift action_6
+action_8 (13) = happyShift action_7
+action_8 (14) = happyShift action_8
+action_8 (4) = happyGoto action_13
+action_8 (5) = happyGoto action_10
+action_8 (6) = happyGoto action_3
+action_8 (7) = happyGoto action_4
+action_8 (8) = happyGoto action_5
 action_8 _ = happyFail
 
-action_9 (10) = happyShift action_7
-action_9 (14) = happyShift action_8
-action_9 (15) = happyShift action_9
-action_9 (4) = happyGoto action_14
-action_9 (5) = happyGoto action_11
-action_9 (6) = happyGoto action_3
-action_9 (7) = happyGoto action_4
-action_9 (8) = happyGoto action_5
-action_9 (9) = happyGoto action_6
+action_9 (16) = happyAccept
 action_9 _ = happyFail
 
-action_10 (17) = happyAccept
-action_10 _ = happyFail
+action_10 (10) = happyShift action_11
+action_10 (12) = happyShift action_12
+action_10 _ = happyReduce_1
 
-action_11 (11) = happyShift action_12
-action_11 (13) = happyShift action_13
-action_11 _ = happyReduce_1
+action_11 (9) = happyShift action_6
+action_11 (13) = happyShift action_7
+action_11 (14) = happyShift action_8
+action_11 (4) = happyGoto action_19
+action_11 (5) = happyGoto action_10
+action_11 (6) = happyGoto action_3
+action_11 (7) = happyGoto action_4
+action_11 (8) = happyGoto action_5
+action_11 _ = happyFail
 
-action_12 (10) = happyShift action_7
+action_12 (9) = happyShift action_6
+action_12 (13) = happyShift action_7
 action_12 (14) = happyShift action_8
-action_12 (15) = happyShift action_9
-action_12 (4) = happyGoto action_20
-action_12 (5) = happyGoto action_11
-action_12 (6) = happyGoto action_3
+action_12 (6) = happyGoto action_18
 action_12 (7) = happyGoto action_4
 action_12 (8) = happyGoto action_5
-action_12 (9) = happyGoto action_6
 action_12 _ = happyFail
 
-action_13 (10) = happyShift action_7
-action_13 (14) = happyShift action_8
-action_13 (15) = happyShift action_9
-action_13 (6) = happyGoto action_19
-action_13 (7) = happyGoto action_4
-action_13 (8) = happyGoto action_5
-action_13 (9) = happyGoto action_6
+action_13 (15) = happyShift action_17
 action_13 _ = happyFail
 
-action_14 (16) = happyShift action_18
-action_14 _ = happyFail
+action_14 _ = happyReduce_9
 
-action_15 _ = happyReduce_9
+action_15 (9) = happyShift action_6
+action_15 (13) = happyShift action_7
+action_15 (14) = happyShift action_8
+action_15 (7) = happyGoto action_16
+action_15 (8) = happyGoto action_5
+action_15 _ = happyFail
 
-action_16 (10) = happyShift action_7
-action_16 (14) = happyShift action_8
-action_16 (15) = happyShift action_9
-action_16 (7) = happyGoto action_4
-action_16 (8) = happyGoto action_17
-action_16 (9) = happyGoto action_6
-action_16 _ = happyFail
+action_16 _ = happyReduce_6
 
-action_17 _ = happyReduce_6
+action_17 _ = happyReduce_8
 
-action_18 _ = happyReduce_8
+action_18 (11) = happyShift action_15
+action_18 _ = happyReduce_4
 
-action_19 (12) = happyShift action_16
-action_19 _ = happyReduce_4
-
-action_20 _ = happyReduce_2
+action_19 _ = happyReduce_2
 
 happyReduce_1 = happySpecReduce_1  4 happyReduction_1
 happyReduction_1 (HappyAbsSyn5  happy_var_1)
@@ -150,14 +142,14 @@ happyReduction_4 (HappyAbsSyn6  happy_var_3)
 happyReduction_4 _ _ _  = notHappyAtAll 
 
 happyReduce_5 = happySpecReduce_1  6 happyReduction_5
-happyReduction_5 (HappyAbsSyn8  happy_var_1)
+happyReduction_5 (HappyAbsSyn7  happy_var_1)
 	 =  HappyAbsSyn6
 		 (RuleNot1 happy_var_1
 	)
 happyReduction_5 _  = notHappyAtAll 
 
 happyReduce_6 = happySpecReduce_3  6 happyReduction_6
-happyReduction_6 (HappyAbsSyn8  happy_var_3)
+happyReduction_6 (HappyAbsSyn7  happy_var_3)
 	_
 	(HappyAbsSyn6  happy_var_1)
 	 =  HappyAbsSyn6
@@ -166,7 +158,7 @@ happyReduction_6 (HappyAbsSyn8  happy_var_3)
 happyReduction_6 _ _ _  = notHappyAtAll 
 
 happyReduce_7 = happySpecReduce_1  7 happyReduction_7
-happyReduction_7 (HappyAbsSyn9  happy_var_1)
+happyReduction_7 (HappyAbsSyn8  happy_var_1)
 	 =  HappyAbsSyn7
 		 (RuleVar1 happy_var_1
 	)
@@ -181,45 +173,38 @@ happyReduction_8 _
 	)
 happyReduction_8 _ _ _  = notHappyAtAll 
 
-happyReduce_9 = happySpecReduce_2  8 happyReduction_9
+happyReduce_9 = happySpecReduce_2  7 happyReduction_9
 happyReduction_9 (HappyAbsSyn7  happy_var_2)
 	_
-	 =  HappyAbsSyn8
+	 =  HappyAbsSyn7
 		 (RuleNotGen happy_var_2
 	)
 happyReduction_9 _ _  = notHappyAtAll 
 
 happyReduce_10 = happySpecReduce_1  8 happyReduction_10
-happyReduction_10 (HappyAbsSyn7  happy_var_1)
+happyReduction_10 (HappyTerminal (TokenVar happy_var_1))
 	 =  HappyAbsSyn8
-		 (RuleAtom1 happy_var_1
+		 (RuleVar happy_var_1
 	)
 happyReduction_10 _  = notHappyAtAll 
 
-happyReduce_11 = happySpecReduce_1  9 happyReduction_11
-happyReduction_11 (HappyTerminal (TokenVar happy_var_1))
-	 =  HappyAbsSyn9
-		 (RuleVar happy_var_1
-	)
-happyReduction_11 _  = notHappyAtAll 
-
 happyNewToken action sts stk [] =
-	action 17 17 notHappyAtAll (HappyState action) sts stk []
+	action 16 16 notHappyAtAll (HappyState action) sts stk []
 
 happyNewToken action sts stk (tk:tks) =
 	let cont i = action i i tk (HappyState action) sts stk tks in
 	case tk of {
-	TokenVar happy_dollar_dollar -> cont 10;
-	TokenImpl -> cont 11;
-	TokenAnd -> cont 12;
-	TokenOr -> cont 13;
-	TokenNot -> cont 14;
-	TokenOB -> cont 15;
-	TokenCB -> cont 16;
+	TokenVar happy_dollar_dollar -> cont 9;
+	TokenImpl -> cont 10;
+	TokenAnd -> cont 11;
+	TokenOr -> cont 12;
+	TokenNot -> cont 13;
+	TokenOB -> cont 14;
+	TokenCB -> cont 15;
 	_ -> happyError' (tk:tks)
 	}
 
-happyError_ 17 tk tks = happyError' tks
+happyError_ 16 tk tks = happyError' tks
 happyError_ _ tk tks = happyError' (tk:tks)
 
 newtype HappyIdentity a = HappyIdentity a
@@ -278,12 +263,9 @@ data RuleAnd
     | RuleAnd RuleAnd RuleNot
 
 data RuleNot
-    = RuleNotGen RuleAtom
-    | RuleAtom1 RuleAtom
-
-data RuleAtom
     = RuleVar1 RuleVar
     | RuleBrack RuleExpr
+    | RuleNotGen RuleNot
 
 data RuleVar
     = RuleVar String
@@ -294,11 +276,12 @@ data Expr
         | Impl Expr Expr
         | Or Expr Expr
         | And Expr Expr
-        deriving (Eq)
+        deriving ((Eq),Show)
 
-atomToExpr :: RuleAtom -> Expr
-atomToExpr (RuleVar1 (RuleVar v)) = Var v
-atomToExpr (RuleBrack expr) = ruleToExpr expr
+notToExpr :: RuleNot -> Expr
+notToExpr (RuleVar1 (RuleVar v)) = Var v
+notToExpr (RuleBrack expr) = ruleToExpr expr
+notToExpr (RuleNotGen not) = Not (notToExpr not)
 
 orToExpr :: RuleOr -> Expr
 orToExpr (RuleAnd1 and) = andToExpr and
@@ -307,10 +290,6 @@ orToExpr (RuleOr or and) = Or (orToExpr or) (andToExpr and)
 andToExpr :: RuleAnd -> Expr
 andToExpr (RuleNot1 not) = notToExpr not
 andToExpr (RuleAnd and not) = And (andToExpr and) (notToExpr not)
-
-notToExpr :: RuleNot -> Expr
-notToExpr (RuleNotGen not) = Not (atomToExpr not)
-notToExpr (RuleAtom1 atom) = atomToExpr atom
 
 ruleToExpr :: RuleExpr -> Expr
 ruleToExpr (RuleImpl or expr) = Impl (orToExpr or) (ruleToExpr expr)

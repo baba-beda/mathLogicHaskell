@@ -27,11 +27,9 @@ Or          : And               { RuleAnd1 $1 }
 And         : Not               { RuleNot1 $1 }
             | And '&' Not       { RuleAnd $1 $3 }
 
-Atom        : Var               { RuleVar1 $1 }
+Not         : Var               { RuleVar1 $1 }
             | '(' Expr ')'      { RuleBrack $2 }
-
-Not         : '!' Atom          { RuleNotGen $2 }
-            | Atom              { RuleAtom1 $1 }
+            | '!' Not           { RuleNotGen $2 }
 
 Var         : var               { RuleVar $1 }
 
@@ -63,12 +61,9 @@ data RuleAnd
     | RuleAnd RuleAnd RuleNot
 
 data RuleNot
-    = RuleNotGen RuleAtom
-    | RuleAtom1 RuleAtom
-
-data RuleAtom
     = RuleVar1 RuleVar
     | RuleBrack RuleExpr
+    | RuleNotGen RuleNot
 
 data RuleVar
     = RuleVar String
@@ -79,11 +74,12 @@ data Expr
         | Impl Expr Expr
         | Or Expr Expr
         | And Expr Expr
-        deriving (Eq)
+        deriving ((Eq),Show)
 
-atomToExpr :: RuleAtom -> Expr
-atomToExpr (RuleVar1 (RuleVar v)) = Var v
-atomToExpr (RuleBrack expr) = ruleToExpr expr
+notToExpr :: RuleNot -> Expr
+notToExpr (RuleVar1 (RuleVar v)) = Var v
+notToExpr (RuleBrack expr) = ruleToExpr expr
+notToExpr (RuleNotGen not) = Not (notToExpr not)
 
 orToExpr :: RuleOr -> Expr
 orToExpr (RuleAnd1 and) = andToExpr and
@@ -92,10 +88,6 @@ orToExpr (RuleOr or and) = Or (orToExpr or) (andToExpr and)
 andToExpr :: RuleAnd -> Expr
 andToExpr (RuleNot1 not) = notToExpr not
 andToExpr (RuleAnd and not) = And (andToExpr and) (notToExpr not)
-
-notToExpr :: RuleNot -> Expr
-notToExpr (RuleNotGen not) = Not (atomToExpr not)
-notToExpr (RuleAtom1 atom) = atomToExpr atom
 
 ruleToExpr :: RuleExpr -> Expr
 ruleToExpr (RuleImpl or expr) = Impl (orToExpr or) (ruleToExpr expr)
