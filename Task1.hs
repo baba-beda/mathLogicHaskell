@@ -6,7 +6,6 @@ import System.IO
 main = do
     print "5"
 
-
 isAxiom :: Expr -> Int
 isAxiom expr = (isAxiom1 expr) + (isAxiom2 expr) + (isAxiom3 expr) + (isAxiom4 expr) + (isAxiom5 expr) + (isAxiom6 expr) + (isAxiom7 expr) + (isAxiom8 expr) + (isAxiom9 expr) + (isAxiom10 expr)
 
@@ -69,3 +68,8 @@ isAxiom10 (Impl (Not (Not a)) b)
     | a == b = 10
     | otherwise = 0
 isAxiom10 _ = 0
+
+isMP :: Expr -> Expr -> Expr -> Bool
+isMP a (Impl b c) d
+    | a == b && c == d = True
+isMP _ _ _ = False
