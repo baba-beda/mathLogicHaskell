@@ -108,7 +108,7 @@ lexer :: String -> [Token]
 lexer [] = []
 lexer (c:cs) 
     | isSpace c = lexer cs
-    | isAlpha c = Token var : lexer rest
+    | isAlpha c = TokenVar var : lexer rest
         where var = c:ds
               (ds, rest) = span isDigit cs
 lexer ('-':'>':cs) = TokenImpl : lexer cs
