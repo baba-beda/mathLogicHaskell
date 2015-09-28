@@ -74,7 +74,7 @@ data Expr
         | Impl Expr Expr
         | Or Expr Expr
         | And Expr Expr
-        deriving ((Eq),Show)
+        deriving (Eq)
 
 notToExpr :: RuleNot -> Expr
 notToExpr (RuleVar1 (RuleVar v)) = Var v
@@ -95,6 +95,13 @@ ruleToExpr (RuleOr1 or) = orToExpr or
 
 instance Read Expr where
     readsPrec _ s = [(ruleToExpr $ parse $ lexer $ dropWhile isSpace s, "")]
+
+instance Show Expr where
+    show (Impl a b) = "(" ++ (show a) ++ "->" ++ (show b) ++ ")"
+    show (Not a) = "!(" ++ (show a) ++ ")"
+    show (And a b) = "(" ++ (show a) ++ "&" ++ (show b) ++ ")"
+    show (Or a b) = "(" ++ (show a) ++ "|" ++ (show b) ++ ")"
+    show (Var s) = s
 
 lexer :: String -> [Token]
 lexer [] = []
