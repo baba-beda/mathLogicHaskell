@@ -19,14 +19,14 @@ check [] _ _ = []
 
 findAB :: Expr -> Int -> Expr ->  [Expr] -> [Expr] ->  (Int, Int)
 findAB e i (Impl a b) rest proof
-    | e == b = (i, findA b 0 proof)
+    | e == b = let k = (findA a 0 proof) in (if k > 0 then (i, k) else (findAB e (i+1) (head rest) (tail rest) proof))
     | otherwise = findAB e (i + 1) (head rest) (tail rest) proof
 findAB _ _ _ [] _ = (-1, -1)
 
 findA :: Expr -> Int -> [Expr] -> Int
-findA b i (e:proof)
-    | b == e = i
-    | otherwise = findA b (i + 1) proof
+findA a i (e:proof)
+    | a == e = i
+    | otherwise = findA a (i + 1) proof
 findA _ _ [] = -1
     
 
