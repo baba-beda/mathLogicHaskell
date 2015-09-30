@@ -74,7 +74,7 @@ data Expr
         | Impl Expr Expr
         | Or Expr Expr
         | And Expr Expr
-        deriving (Eq)
+        deriving (Eq, Ord)
 
 notToExpr :: RuleNot -> Expr
 notToExpr (RuleVar1 (RuleVar v)) = Var v
