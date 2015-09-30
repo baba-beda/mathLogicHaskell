@@ -15,7 +15,8 @@ import System.Exit (exitSuccess)
 main = do
     f <- readFile "task1.in"
     let proof = map read (lines f) :: [Expr]
-    checkProof proof
+    res <- checkProof proof
+    mapM_ putStrLn res
     
 
 checkProof proof  = runST $ do
@@ -24,14 +25,12 @@ checkProof proof  = runST $ do
     mapProof <- newSTRef Map.empty
     neededA <- newSTRef Map.empty
     resultsMP <- newSTRef Map.empty
-    annotations <- newSTRef []
-    annots <- forM_ [0..n - 1] $ \i -> do
+    annotations <- forM [0..n - 1] $ \i -> do
         mPr <- readSTRef mapProof
         nA <- readSTRef neededA
         resMP <- readSTRef resultsMP
         curExp <- readArray proofArray i
         let a = isAxiom curExp
-        an <- readSTRef annotations
 
         if (a > 0) then do
             let msg = "(" ++ (show (i + 1)) ++ ") " ++ (show curExp) ++ " axiom " ++ (show a)
@@ -57,6 +56,6 @@ checkProof proof  = runST $ do
                 writeSTRef resultsMP (Map.insert b (i, index) resMP)
                 writeSTRef neededA (Map.delete curExp nA)
         writeSTRef mapProof (Map.insert curExp i mPr)
-    return annots
+    return annotations
         
 
