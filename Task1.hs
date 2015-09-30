@@ -22,25 +22,21 @@ checkProof proof  = runST $ do
     mapProof <- newSTRef Map.empty
     neededA <- newSTRef Map.empty
     resultsMP <- newSTRef Map.empty
+    auxForMsg <- newSTRef Null
     annotations <- forM [0..n - 1] $ \i -> do
         mPr <- readSTRef mapProof
         nA <- readSTRef neededA
         resMP <- readSTRef resultsMP
         curExp <- readArray proofArray i
         let a = isAxiom curExp
-        let result = Wrong curExp
         if (a > 0) then do
-            let result = Axiom a curExp
-            return ()
+            writeSTRef auxForMsg (Axiom a curExp)
         else do
             case Map.lookup curExp resMP of
                 Nothing -> do
-                    let result = Wrong curExp
-                    return ()
+                    writeSTRef auxForMsg (Wrong curExp)
                 Just (f, s) -> do
-                    let result = MP f s curExp
-                    return ()
-
+                    writeSTRef auxForMsg (MP f s curExp)
         case curExp of 
             (Impl a b) -> do
                     case Map.lookup a mPr of
@@ -54,13 +50,15 @@ checkProof proof  = runST $ do
                 writeSTRef resultsMP (Map.insert b (i, index) resMP)
                 writeSTRef neededA (Map.delete curExp nA)
         writeSTRef mapProof (Map.insert curExp i mPr)
-        return result
+        readSTRef auxForMsg
     return annotations
         
 data AnnotatedExpr =
       Axiom Int Expr
     | MP Int Int Expr
     | Wrong Expr
+    | Null
+    deriving (Show)
 
 
 printAnnotations (Axiom i e) annotated j = do
