@@ -8,10 +8,18 @@ import Data.Array.ST
 import Data.STRef
 import qualified Data.Map as Map
 import qualified Data.Set as Set
-
+import qualified Data.Array as Array
 
 annotateProof :: [Expr] -> [Expr] -> [AnnotatedExpr]
-annotateProof assumptions proof  = runST $ do
+annotateProof assumptions proof = do
+    let firstAn = annotate assumptions proof
+    let removed = removeRedundantStatements firstAn
+    return (annotate assumptions removed)
+
+    
+
+annotate :: [Expr] -> [Expr] -> [AnnotatedExpr]
+annotate assumptions proof  = runST $ do
     let n = (length proof)
     proofArray <- newListArray (0, n - 1) proof :: ST s (STArray s Int Expr)
     mapProof <- newSTRef Map.empty
@@ -58,6 +66,20 @@ data AnnotatedExpr =
     | Wrong Expr
     | Null
     deriving (Show)
+
+removeRedundantStatements :: [AnnotatedExpr] -> [Expr]
+removeRedundantStatements annotatedExprList = do
+    let n = length annotatedExprList
+    arrayAnnotated <- Array.listArray (0, n - 1) annotatedExprList :: Array.Array Int AnnotatedExpr
+    return reverse (dfs (arrayAnnotated Array.! (n - 1)) arrayAnnotated)
+
+dfs :: AnnotatedExpr -> Array.Array Int AnnotatedExpr -> [Expr]
+dfs (MP a b e) arr = [e] ++ (dfs (arr Array.! a) arr) ++ (dfs (arr Array.! b) arr)
+dfs (Axiom _ e) arr = [e]
+dfs (Assumption e) arr = [e]
+dfs (Wrong e) arr = [e]
+dfs Null arr = []
+
 
 printAnnotations :: AnnotatedExpr -> [AnnotatedExpr] -> Int -> IO ()
 printAnnotations (Axiom i e) annotated j = do
