@@ -1,5 +1,3 @@
-module Task2 where
-
 import Grammar
 import Data.List.Utils
 import Annotator
@@ -17,5 +15,5 @@ main = do
     let alpha = last assumptionsAux
 
     let res = Annotator.annotateProof assumptions  (Deductor.completeProof assumptions alpha sourceProof)
-    Annotator.printAnnotations (head res) (tail res) 0
+    Annotator.printAnnotations res 0
 

@@ -1,6 +1,16 @@
 module Constructions where
 
+import qualified Data.Map as Map
 import Grammar
+import qualified Data.Maybe as Maybe
+
+substitute :: Map.Map String Expr -> Expr -> Expr
+substitute m (Impl a b) = Impl (substitute m a) (substitute m b)
+substitute m (And a b) = And (substitute m a) (substitute m b)
+substitute m (Or a b) = Or (substitute m a) (substitute m b)
+substitute m (Not a) = Not (substitute m a)
+substitute m (Var s) = Maybe.fromMaybe Null (Map.lookup s m)
+substitute _ Null = Null
 
 axiom1, axiom3, axiom4, axiom5, axiom6, axiom7, axiom9 :: Expr -> Expr -> Expr
 axiom2, axiom8 :: Expr -> Expr -> Expr -> Expr
@@ -19,5 +29,3 @@ axiom10 a = Impl (Not (Not a)) a
 
 selfImpl :: Expr -> [Expr]
 selfImpl a = [axiom1 a a, axiom1 a (Impl a a), axiom2 a (Impl a a) a, Impl (axiom1 a (Impl a a)) (Impl a a), Impl a a]
-
-

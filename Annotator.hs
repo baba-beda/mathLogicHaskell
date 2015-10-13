@@ -13,8 +13,7 @@ import qualified Data.Array as Array
 annotateProof :: [Expr] -> [Expr] -> [AnnotatedExpr]
 annotateProof assumptions proof = do
     let firstAn = annotate assumptions proof
-    let removed = removeRedundantStatements firstAn
-    return (annotate assumptions removed)
+    if containsWrong firstAn then firstAn else annotate assumptions (removeRedundantStatements firstAn)
 
     
 
@@ -25,7 +24,7 @@ annotate assumptions proof  = runST $ do
     mapProof <- newSTRef Map.empty
     neededA <- newSTRef Map.empty
     resultsMP <- newSTRef Map.empty
-    auxForMsg <- newSTRef Null
+    auxForMsg <- newSTRef Annotator.Null
     assumptionsST <- newSTRef (Set.fromList assumptions)
     annotations <- forM [0..n - 1] $ \i -> do
         mPr <- readSTRef mapProof
@@ -65,35 +64,38 @@ data AnnotatedExpr =
     | Assumption Expr
     | Wrong Expr
     | Null
-    deriving (Show)
 
+instance Show AnnotatedExpr where
+    show (Axiom i e) = show e ++ " axiom " ++ show i
+    show (MP i j e) = show e ++ " MP " ++ show (i + 1) ++ ", " ++ show (j + 1)
+    show (Assumption e) = show e ++ " assumption"
+    show (Wrong e) = show e
+    show Annotator.Null = ""
+
+containsWrong :: [AnnotatedExpr] -> Bool
+containsWrong (expr:xs) =
+    case expr of
+        Wrong _ -> True
+        _ -> containsWrong xs
+containsWrong [] = False
 removeRedundantStatements :: [AnnotatedExpr] -> [Expr]
-removeRedundantStatements annotatedExprList = do
-    let n = length annotatedExprList
-    arrayAnnotated <- Array.listArray (0, n - 1) annotatedExprList :: Array.Array Int AnnotatedExpr
-    return reverse (dfs (arrayAnnotated Array.! (n - 1)) arrayAnnotated)
+removeRedundantStatements annotatedExprList =
+    let n = length annotatedExprList in 
+        let arrayAnnotated = (Array.listArray (0, n - 1) annotatedExprList :: Array.Array Int AnnotatedExpr) in
+            reverse (dfs (arrayAnnotated Array.! (n - 1)) arrayAnnotated)
 
 dfs :: AnnotatedExpr -> Array.Array Int AnnotatedExpr -> [Expr]
-dfs (MP a b e) arr = [e] ++ (dfs (arr Array.! a) arr) ++ (dfs (arr Array.! b) arr)
-dfs (Axiom _ e) arr = [e]
-dfs (Assumption e) arr = [e]
-dfs (Wrong e) arr = [e]
-dfs Null arr = []
+dfs (MP a b e) arr = [e] ++ dfs (arr Array.! a) arr ++ dfs (arr Array.! b) arr
+dfs (Axiom _ e) _ = [e]
+dfs (Assumption e) _  = [e]
+dfs (Wrong e) _ = [e]
+dfs Annotator.Null _ = []
 
+printAnnotations :: [AnnotatedExpr] -> Int -> IO ()
 
-printAnnotations :: AnnotatedExpr -> [AnnotatedExpr] -> Int -> IO ()
-printAnnotations (Axiom i e) annotated j = do
-    putStrLn $ "(" ++ show (j + 1) ++ ") " ++ show e ++ " axiom " ++ show i
-    if null annotated then putStrLn "Proof is correct"  else printAnnotations (head annotated) (tail annotated) (j + 1)
-
-printAnnotations (MP a b e) annotated j = do
-    putStrLn $ "(" ++ show (j + 1) ++ ") " ++ show e ++ " MP  " ++ show (a + 1) ++ ", " ++ show (b + 1)
-    if null annotated then putStrLn "Proof is correct"  else printAnnotations (head annotated) (tail annotated) (j + 1)
-
-printAnnotations (Wrong e) _ j = putStrLn $ "(" ++ show (j + 1) ++ ") " ++ show e ++ "\n" ++ "Proof is incorrect from statement " ++ show (j + 1)
-
-printAnnotations (Assumption e) annotated j = do
-    putStrLn $ "(" ++ show (j + 1) ++ ") " ++ show e ++ " assumption"
-    if null annotated then putStrLn "Proof is correct" else printAnnotations (head annotated) (tail annotated) (j + 1)
-printAnnotations Null _ _ = return ()
-
+printAnnotations (annE:annotated) j = do
+    putStrLn $ "(" ++ show (j + 1) ++ ") " ++ show annE
+    case annE of
+        Wrong _ -> putStrLn $ "Proof is incorrect from statement " ++ show (j + 1)
+        _ -> printAnnotations annotated (j + 1)
+printAnnotations [] _ = putStrLn "Proof is correct"

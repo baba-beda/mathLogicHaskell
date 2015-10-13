@@ -74,6 +74,7 @@ data Expr
         | Impl Expr Expr
         | Or Expr Expr
         | And Expr Expr
+        | Null
         deriving (Eq, Ord)
 
 notToExpr :: RuleNot -> Expr
